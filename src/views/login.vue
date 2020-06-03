@@ -31,10 +31,10 @@ export default {
     rgba(1, 198, 250, 1)
   );
   .rigth {
-    // img{
-    //   width: 630px;
-    //   height: 435px;
-    // }
+    img{
+      width: 630px;
+      height: 435px;
+    }
   }
 }
 .left {
