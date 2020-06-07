@@ -110,8 +110,8 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  // height: 100%;
-  height: 788px;
+  height: 100%;
+  // height: 788px;
   background: linear-gradient(
     225deg,
     rgba(20, 147, 250, 1),
