@@ -107,6 +107,8 @@ export default {
       this.$refs.form.validate(result => {
         // console.log(result)
         this.$message.success(result + '')
+        // console.log(process.env.VUE_APP_URL)
+        // this.$message.success(process.env.VUE_APP_URL)
       })
     },
     registerClick () {
