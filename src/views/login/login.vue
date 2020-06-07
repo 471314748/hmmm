@@ -59,18 +59,24 @@
         <el-form-item>
           <el-button type='primary' class="btn" @click="loginClick">登录</el-button>
           <br />
-          <el-button type='primary' class="btn">注册</el-button>
+          <el-button type='primary' class="btn" @click="registerClick">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="rigth">
       <img src='@/assets/img/login_banner_ele@2x.png' />
     </div>
+    <!-- 注册组件 -->
+    <register ref="register"></register>
   </div>
 </template>
 
 <script>
+import register from './register'
 export default {
+  components: {
+    register
+  },
   data () {
     return {
       form: {
@@ -78,6 +84,7 @@ export default {
         password: '',
         code: '',
         isCheck: ''
+        // dialogVisible: false
       },
       rules: {
         phone: [
@@ -98,8 +105,12 @@ export default {
   methods: {
     loginClick () {
       this.$refs.form.validate(result => {
-        console.log(result)
+        // console.log(result)
+        this.$message.success(result + '')
       })
+    },
+    registerClick () {
+      this.$refs.register.dialogVisible = true
     }
   }
 }
