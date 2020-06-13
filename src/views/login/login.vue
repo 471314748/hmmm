@@ -31,21 +31,15 @@
             v-model="form.password"
           ></el-input>
         </el-form-item>
-        <el-form-item >
+        <el-form-item prop="code">
           <el-row>
-          <el-col :span='16'>
-            <el-form-item prop='code'>
-              <el-input
-                prefix-icon='el-icon-coordinate'
-                placeholder='请输入验证码'
-                v-model="form.code"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span='8'>
-            <img class="key" src="@/assets/img/titele@2x.png" alt="">
-          </el-col>
-        </el-row>
+            <el-col :span="16">
+              <el-input v-model="form.code" prefix-icon="el-icon-key" placeholder="请输入验证码"></el-input>
+            </el-col>
+            <el-col :span="8">
+              <img :src="code" @click="codeClick" class="key" alt />
+            </el-col>
+          </el-row>
         </el-form-item>
         <!-- 条款 -->
         <el-form-item>
@@ -79,6 +73,7 @@ export default {
   },
   data () {
     return {
+      code: process.env.VUE_APP_URL + '/captcha?type=login',
       form: {
         phone: '',
         password: '',
@@ -113,6 +108,9 @@ export default {
     },
     registerClick () {
       this.$refs.register.dialogFormVisible = true
+    },
+    codeClick () {
+      this.code = process.env.VUE_APP_URL + '/captcha?type=login&t=' + Date.now()
     }
   }
 }
