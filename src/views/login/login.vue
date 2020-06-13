@@ -43,7 +43,7 @@
             </el-form-item>
           </el-col>
           <el-col :span='8'>
-            <img src="" alt="">
+            <img class="key" src="@/assets/img/titele@2x.png" alt="">
           </el-col>
         </el-row>
         </el-form-item>
@@ -112,7 +112,7 @@ export default {
       })
     },
     registerClick () {
-      this.$refs.register.dialogVisible = true
+      this.$refs.register.dialogFormVisible = true
     }
   }
 }
@@ -160,6 +160,10 @@ export default {
       color: #ccc;
     }
   }
+  .key {
+      width: 100%;
+      height: 40px;
+    }
   .btn{
     width: 100%;
   }
