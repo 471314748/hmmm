@@ -86,7 +86,7 @@
 
 <script>
 // import axios from 'axios'
-import { getPhoneCode, register } from '../../api/register'
+import { register, getPhoneCode } from '../../api/register'
 export default {
   data () {
     return {
