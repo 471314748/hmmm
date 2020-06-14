@@ -31,24 +31,18 @@
             v-model="form.password"
           ></el-input>
         </el-form-item>
-        <el-form-item >
+        <el-form-item prop="code">
           <el-row>
-          <el-col :span='16'>
-            <el-form-item prop='code'>
-              <el-input
-                prefix-icon='el-icon-coordinate'
-                placeholder='请输入验证码'
-                v-model="form.code"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span='8'>
-            <img class="key" src="@/assets/img/titele@2x.png" alt="">
-          </el-col>
-        </el-row>
+            <el-col :span="16">
+              <el-input v-model="form.code" prefix-icon="el-icon-key" placeholder="请输入验证码"></el-input>
+            </el-col>
+            <el-col :span="8">
+              <img :src="code" @click="codeClick" class="key" alt />
+            </el-col>
+          </el-row>
         </el-form-item>
         <!-- 条款 -->
-        <el-form-item>
+        <el-form-item prop="isCheck">
           <el-checkbox v-model="form.isCheck">
             我已经阅读并且同意
             <el-link type="primary">用户协议</el-link>和
@@ -73,15 +67,18 @@
 
 <script>
 import register from './register'
+import { toLogin } from '../../api/login'
+import { setToken } from '@/utils/token.js'
 export default {
   components: {
     register
   },
   data () {
     return {
+      code: process.env.VUE_APP_URL + '/captcha?type=login',
       form: {
-        phone: '',
-        password: '',
+        phone: '18511111111',
+        password: '12345678',
         code: '',
         isCheck: ''
         // dialogVisible: false
@@ -89,7 +86,16 @@ export default {
       rules: {
         phone: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
-          { min: 11, max: 11, message: '长度在 11 个字符', trigger: 'change' }
+          {
+            validator: (rule, value, callback) => {
+              const _reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/
+              if (_reg.test(value)) {
+                callback()
+              } else {
+                callback(new Error('请输入正确的手机号码'))
+              }
+            }
+          }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
@@ -98,6 +104,18 @@ export default {
         code: [
           { required: true, message: '请输入验证码', trigger: 'blur' },
           { min: 4, max: 4, message: '长度在 4 位验证码', trigger: 'change' }
+        ],
+        isCheck: [
+          { required: true, message: '请输入验证码', trigger: 'blur' },
+          {
+            validator: (rule, value, callback) => {
+              if (value === true) {
+                callback()
+              } else {
+                callback(new Error('请勾选协议'))
+              }
+            }
+          }
         ]
       }
     }
@@ -106,13 +124,24 @@ export default {
     loginClick () {
       this.$refs.form.validate(result => {
         // console.log(result)
-        this.$message.success(result + '')
+        // this.$message.success(result + '')
         // console.log(process.env.VUE_APP_URL)
         // this.$message.success(process.env.VUE_APP_URL)
+        // 登录
+        if (result === true) {
+          toLogin(this.form).then(res => {
+            this.$message.success('登录成功')
+            console.log('登录信息', res)
+            setToken(res.data.token)
+          })
+        }
       })
     },
     registerClick () {
       this.$refs.register.dialogFormVisible = true
+    },
+    codeClick () {
+      this.code = process.env.VUE_APP_URL + '/captcha?type=login&t=' + Date.now()
     }
   }
 }
