@@ -1,9 +1,9 @@
 <template>
-  <div id="app">
-    <router-view/>
+  <div class="app">
+    <router-view></router-view>
   </div>
 </template>
 
-<style>
+<style lang="less">
 @import url(~@/style/base.css);
 </style>

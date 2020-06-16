@@ -66,9 +66,10 @@
 </template>
 
 <script>
+// import router from '../../router'
 import register from './register'
 import { toLogin } from '../../api/login'
-import { setToken } from '@/utils/token.js'
+import { setToken, getToken } from '@/utils/token.js'
 export default {
   components: {
     register
@@ -131,8 +132,9 @@ export default {
         if (result === true) {
           toLogin(this.form).then(res => {
             this.$message.success('登录成功')
-            console.log('登录信息', res)
+            console.log('登录信息：', res)
             setToken(res.data.token)
+            this.$router.push('/home')
           })
         }
       })
@@ -143,11 +145,16 @@ export default {
     codeClick () {
       this.code = process.env.VUE_APP_URL + '/captcha?type=login&t=' + Date.now()
     }
+  },
+  created () {
+    if (getToken()) {
+      this.$router.push('/home')
+    }
   }
 }
 </script>
 
-<style lang='less'>
+<style lang='less' scoped>
 .login {
   display: flex;
   justify-content: space-around;
