@@ -7,8 +7,8 @@
         <span class="title">黑马面面</span>
       </div>
       <div class="right">
-        <img class="avatar" :src="userInfo.avatar" alt />
-        <span class="name">{{userInfo.username}}，您好</span>
+        <img class="avatar" :src="this.$store.state.userInfo.avatar" alt />
+        <span class="name">{{this.$store.state.userInfo.username}}，您好</span>
         <el-button type="primary" @click="exit">退出</el-button>
       </div>
       </el-header>
@@ -73,7 +73,10 @@ export default {
       this.userInfo.avatar =
         process.env.VUE_APP_URL + '/' + this.userInfo.avatar
       window.console.log('用户信息', res)
+      this.$store.state.userInfo = this.userInfo
       // this.$router.push('/home/chart')
+      // console.log(this.$route.fullPath)
+      // console.log('vuex的用户信息', this.$store.state.userInfo)
     })
   },
   methods: {
