@@ -70,6 +70,8 @@ const router = new VueRouter({
     }
   ]
 })
+// 导航守卫
+// 进入前守卫
 router.beforeEach((to, from, next) => {
   NProgress.start()
   next()

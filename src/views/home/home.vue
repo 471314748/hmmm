@@ -7,8 +7,8 @@
         <span class="title">黑马面面</span>
       </div>
       <div class="right">
-        <img class="avatar" :src="this.$store.state.userInfo.avatar" alt />
-        <span class="name">{{this.$store.state.userInfo.username}}，您好</span>
+        <img class="avatar" :src="$store.state.userInfo.avatar" alt />
+        <span class="name">{{$store.state.userInfo.username}}，您好</span>
         <el-button type="primary" @click="exit">退出</el-button>
       </div>
       </el-header>
