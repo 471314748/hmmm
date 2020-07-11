@@ -6,26 +6,27 @@
         label-width='90px'
         :inline="true"
         :model='form'
+        ref='form'
       >
-        <el-form-item label='学科编号'>
+        <el-form-item label='学科编号' prop='rid'>
           <el-input
             class="sedWidth"
             v-model="form.rid"
           ></el-input>
         </el-form-item>
-        <el-form-item label='学科名称'>
+        <el-form-item label='学科名称' prop='name'>
           <el-input
             class="sedWidth"
             v-model="form.name"
           ></el-input>
         </el-form-item>
-        <el-form-item label='创建者'>
+        <el-form-item label='创建者' prop='username'>
           <el-input
             class="sedWidth"
             v-model="form.username"
           ></el-input>
         </el-form-item>
-        <el-form-item label='状态'>
+        <el-form-item label='状态' prop='status'>
           <el-select
             placeholder="请选择状态"
             v-model="form.status"
@@ -42,8 +43,8 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type='primary'>搜索</el-button>
-          <el-button>清除</el-button>
+          <el-button type='primary' @click="search">搜索</el-button>
+          <el-button @click="eliminate">清除</el-button>
           <el-button type='primary'>+新增学科</el-button>
         </el-form-item>
       </el-form>
@@ -52,7 +53,7 @@
       <el-table :data="tableData">
         <el-table-column label="序号" width='50px'>
           <template slot-scope="scope">
-            {{scope.$index+1}}
+            {{(pagination.currentPage-1)*pagination.pageSize+scope.$index+1}}
           </template>
         </el-table-column>
         <el-table-column
@@ -95,8 +96,8 @@
         >
         <template slot-scope="scope">
           <el-button>编辑</el-button>
-          <el-button @click="setStatus(scope)">禁用</el-button>
-          <el-button>删除</el-button>
+          <el-button @click="setStatus(scope.row.id)">{{scope.row.status==0?'启用':'禁用'}}</el-button>
+          <el-button @click="del(scope.row.id)">删除</el-button>
         </template>
         </el-table-column>
       </el-table>
@@ -105,7 +106,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pagination.currentPage"
-          :page-sizes="[3, 20, 30, 40]"
+          :page-sizes="[10, 20, 30, 40]"
           :page-size="pagination.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="pagination.total"
@@ -116,13 +117,16 @@
 </template>
 
 <script>
-import { getsubjectData } from '@/api/subject.js'
+import { getSubjectData, setSubjectStatus, delSubjectData } from '@/api/subject.js'
 export default {
   data () {
     return {
       pagination: {
-        pageSize: 2,
+        //每页条数
+        pageSize: 10,
+        //当前页
         currentPage: 1,
+        //总条数
         total: 40
       },
       form: {
@@ -135,21 +139,7 @@ export default {
     }
   },
   created () {
-    // 获取页码列表数据
-    // var _params = {
-    //   // 页码
-    //   page: this.pagination.currentPage,
-    //   // 页容量
-    //   itmit: this.pagination.pageSize,
-    //   ...this.form
-
-    // }
-    // // 获取搜索数据
-    // getsubjectData(_params).then(res => {
-    //   console.log('搜索数据', res)
-    //   this.tableData = res.data.items
-    //   this.pagination.total = res.data.pagination.total
-    // })
+    // 搜索
     this.getData()
   },
   methods: {
@@ -159,24 +149,30 @@ export default {
       // 页码
         page: this.pagination.currentPage,
         // 页容量
-        itmit: this.pagination.pageSize,
+        limit: this.pagination.pageSize,
         ...this.form
       }
       // 获取搜索数据
-      getsubjectData(_params).then(res => {
+      getSubjectData(_params).then(res => {
         console.log('搜索数据', res)
         this.tableData = res.data.items
         this.pagination.total = res.data.pagination.total
       })
     },
-    setStatus (scope) {
-      console.log(scope)
+    setStatus (id) {
+      console.log(id)
+      setSubjectStatus({id}).then(() => {
+        // console.log(res)
+        this.$message.success('设置状态成功')
+        this.search()
+      })
     },
     // 页容量改变
     handleSizeChange (sizi) {
       // console.log('原容量', sizi)
       this.pagination.pageSize = sizi
       this.pagination.currentPage = 1
+      this.getData()
       // console.log(this.pagination.pageSize)
     },
     // 页码改变
@@ -185,6 +181,31 @@ export default {
       this.pagination.currentPage = page
       // console.log(this.pagination.currentPage)
       this.getData()
+    },
+    // 搜索功能
+    search () {
+      // 页码回1
+      this.pagination.currentPage = 1
+      this.getData()
+    },
+    // 清空表单
+    eliminate () {
+      this.$refs.form.resetFields()
+      this.getData()
+    },
+    // 删除数据
+    del (id) {
+      this.$confirm('你确定要删除此条数据吗?', '删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        delSubjectData({id}).then(() => {
+          this.$message.success('删除成功!')
+          this.search()
+        })
+        // console.log(id)
+      })
     }
   }
 }
