@@ -45,7 +45,7 @@
         <el-form-item>
           <el-button type='primary' @click="search">搜索</el-button>
           <el-button @click="eliminate">清除</el-button>
-          <el-button type='primary'>+新增学科</el-button>
+          <el-button type='primary' @click="add">+新增学科</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -113,12 +113,17 @@
         ></el-pagination>
       </div>
     </el-card>
+    <addSubject ref='addSubject'></addSubject>
   </div>
 </template>
 
 <script>
+import addSubject from './addSubject'
 import { getSubjectData, setSubjectStatus, delSubjectData } from '@/api/subject.js'
 export default {
+  components:{
+    addSubject
+  },
   data () {
     return {
       pagination: {
@@ -206,6 +211,10 @@ export default {
         })
         // console.log(id)
       })
+    },
+    // 修改子的值，使得模态框显示
+    add(){
+      this.$refs.addSubject.dialogFormVisible = true
     }
   }
 }

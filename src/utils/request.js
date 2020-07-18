@@ -6,12 +6,14 @@ import router from '../router/index'
 // 创建实例时设置配置的默认值
 var instance = axios.create({
   baseURL: process.env.VUE_APP_URL,
+  // 跨域携带token
   withCredentials: true
 })
 
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
+  // 请求拦截器中，如果有token，请求中添加token
   if (getToken()) {
     config.headers.token = getToken()
   }
