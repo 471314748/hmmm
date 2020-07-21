@@ -86,7 +86,7 @@ export default {
       this.userInfo = res.data
       this.userInfo.avatar =
         process.env.VUE_APP_URL + '/' + this.userInfo.avatar
-      window.console.log('用户信息', res)
+      // console.log('用户信息', res)
       this.$store.state.userInfo = this.userInfo
       // this.$router.push('/home/chart')
       // console.log(this.$route.fullPath)
