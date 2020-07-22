@@ -23,5 +23,20 @@ function delSubjectData(data) {
       data     
   })
 }
-
-export { getSubjectData, setSubjectStatus, delSubjectData }
+// 新增数据
+function addSubjectData(data) {
+  return instance({
+      url: "/subject/add",
+      method: "post",
+      data     
+  })
+}
+// 编辑数据
+function editSubjectData(data) {
+  return instance({
+      url: "/subject/edit",
+      method: "post",
+      data     
+  })
+}
+export { getSubjectData, setSubjectStatus, delSubjectData, addSubjectData, editSubjectData }

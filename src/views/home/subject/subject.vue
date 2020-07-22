@@ -45,7 +45,7 @@
         <el-form-item>
           <el-button type='primary' @click="search">搜索</el-button>
           <el-button @click="eliminate">清除</el-button>
-          <el-button type='primary'>+新增学科</el-button>
+          <el-button type='primary' @click="add">+新增学科</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -95,7 +95,7 @@
           width='270px'
         >
         <template slot-scope="scope">
-          <el-button>编辑</el-button>
+          <el-button @click="edit(scope.row)">编辑</el-button>
           <el-button @click="setStatus(scope.row.id)">{{scope.row.status==0?'启用':'禁用'}}</el-button>
           <el-button @click="del(scope.row.id)">删除</el-button>
         </template>
@@ -113,14 +113,20 @@
         ></el-pagination>
       </div>
     </el-card>
+    <addSubject ref='addSubject' :mode='mode'></addSubject>
   </div>
 </template>
 
 <script>
+import addSubject from './addSubject'
 import { getSubjectData, setSubjectStatus, delSubjectData } from '@/api/subject.js'
 export default {
+  components:{
+    addSubject
+  },
   data () {
     return {
+      mode: 'add',
       pagination: {
         //每页条数
         pageSize: 10,
@@ -154,13 +160,13 @@ export default {
       }
       // 获取搜索数据
       getSubjectData(_params).then(res => {
-        console.log('搜索数据', res)
+        // console.log('搜索数据', res)
         this.tableData = res.data.items
         this.pagination.total = res.data.pagination.total
       })
     },
     setStatus (id) {
-      console.log(id)
+      // console.log(id)
       setSubjectStatus({id}).then(() => {
         // console.log(res)
         this.$message.success('设置状态成功')
@@ -204,8 +210,29 @@ export default {
           this.$message.success('删除成功!')
           this.search()
         })
+<<<<<<< HEAD
         // console.log(id)6666
+=======
+        // console.log(id);;;
+>>>>>>> subject
       })
+    },
+    // 修改子的值，使得模态框显示
+    add(){
+      this.mode = 'add'
+      this.$refs.addSubject.form = {
+      rid: '',
+      name: '',
+      short_name: '',
+      intro: '',
+      remark: ''
+      }
+      this.$refs.addSubject.dialogFormVisible = true
+    },
+    edit(row){
+      this.mode = 'edit'
+      this.$refs.addSubject.form = JSON.parse(JSON.stringify(row))
+      this.$refs.addSubject.dialogFormVisible = true
     }
   }
 }
