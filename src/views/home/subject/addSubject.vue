@@ -67,7 +67,7 @@ methods: {
           })
         } else {
           editSubjectData(this.form).then(()=>{
-            // 编辑成功
+            // 编辑成功666
             this.$message.success('编辑成功')
             this.dialogFormVisible = false
             this.$parent.search()
