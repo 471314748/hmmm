@@ -258,8 +258,7 @@ export default {
           _pass = false
         }
       })
-      if (_pass === false) {
-      } else {
+      if (_pass) {
         this.totalTime--
         const _interval = setInterval(() => {
           this.totalTime--
