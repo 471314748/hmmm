@@ -210,11 +210,6 @@ export default {
           this.$message.success('删除成功!')
           this.search()
         })
-<<<<<<< HEAD
-        // console.log(id)6666
-=======
-        // console.log(id);;;
->>>>>>> subject
       })
     },
     // 修改子的值，使得模态框显示
