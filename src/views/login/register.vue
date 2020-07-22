@@ -236,7 +236,7 @@ export default {
       this.$refs.form.validate(result => {
         // console.log(result)
         if (result) {
-          register(this.form).then(res => {
+          register(this.form).then(() => {
             // console.log('注册信息', res)
             // if (res.data.code === 200) {
             this.$message.success('注册成功')
