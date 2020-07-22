@@ -23,7 +23,6 @@
         <el-button @click="dialogFormVisible=false">取消</el-button>
         <el-button type='primary' @click="loginClick">提交</el-button>
       </div>
-
     </el-dialog>
   </div>
 </template>
@@ -63,12 +62,12 @@ methods: {
             // 新增成功
             this.$message.success('新增成功')
             this.dialogFormVisible = false
-            // this.$parent.search()
             this.$emit("add")
+            this.$parent.search()
           })
         } else {
           editSubjectData(this.form).then(()=>{
-            // 新增成功
+            // 编辑成功
             this.$message.success('编辑成功')
             this.dialogFormVisible = false
             this.$parent.search()

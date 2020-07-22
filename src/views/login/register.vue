@@ -16,7 +16,10 @@
         ref='form'
         :rules='rules'
       >
-        <el-form-item label="头像" prop='avatar'>
+        <el-form-item
+          label="头像"
+          prop='avatar'
+        >
           <el-upload
             class="avatar-uploader"
             name="image"
@@ -37,29 +40,55 @@
           </el-upload>
         </el-form-item>
         <!-- 昵称 -->
-        <el-form-item label='昵称' prop='username'>
+        <el-form-item
+          label='昵称'
+          prop='username'
+        >
           <el-input v-model="form.username"></el-input>
         </el-form-item>
         <!-- 邮箱 -->
-        <el-form-item label='邮箱' prop='email'>
+        <el-form-item
+          label='邮箱'
+          prop='email'
+        >
           <el-input v-model="form.email"></el-input>
         </el-form-item>
         <!-- 电话 -->
-        <el-form-item label='电话' prop='phone'>
+        <el-form-item
+          label='电话'
+          prop='phone'
+        >
           <el-input v-model="form.phone"></el-input>
         </el-form-item>
         <!-- 密码 -->
-        <el-form-item label='密码' prop='password'>
-          <el-input :show-password='true' v-model="form.password"></el-input>
+        <el-form-item
+          label='密码'
+          prop='password'
+        >
+          <el-input
+            :show-password='true'
+            v-model="form.password"
+          ></el-input>
         </el-form-item>
         <!-- 图形码 -->
-        <el-form-item label='图形码' prop='code'>
+        <el-form-item
+          label='图形码'
+          prop='code'
+        >
           <el-row>
             <el-col :span='16'>
               <el-input v-model="form.code"></el-input>
             </el-col>
-            <el-col :span='7' :offset='1'>
-              <img class="code" :src="codeUrl" @click="changeCodeUrl" alt />
+            <el-col
+              :span='7'
+              :offset='1'
+            >
+              <img
+                class="code"
+                :src="codeUrl"
+                @click="changeCodeUrl"
+                alt
+              />
               <!-- <el-button>验证码</el-button> -->
             </el-col>
           </el-row>
@@ -70,15 +99,30 @@
             <el-col :span='16'>
               <el-input v-model="form.rcode"></el-input>
             </el-col>
-            <el-col :span='7' :offset='1'>
-              <el-button @click="getRecode" :disabled='totalTime!=60'>获取验证码<span v-if="totalTime!=60">{{totalTime}}</span></el-button>
+            <el-col
+              :span='7'
+              :offset='1'
+            >
+              <el-button
+                @click="getRecode"
+                :disabled='totalTime!=60'
+              >获取验证码<span v-if="totalTime!=60">{{totalTime}}</span></el-button>
             </el-col>
           </el-row>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="center">
-        <el-button class="btn" @click="dialogFormVisible=false">取消</el-button>
-        <el-button type='primary' @click="subitClick" >确定</el-button>
+      <div
+        slot="footer"
+        class="center"
+      >
+        <el-button
+          class="btn"
+          @click="dialogFormVisible=false"
+        >取消</el-button>
+        <el-button
+          type='primary'
+          @click="subitClick"
+        >确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -88,7 +132,7 @@
 // import axios from 'axios'
 import { register, getPhoneCode } from '../../api/register'
 export default {
-  data () {
+  data() {
     return {
       // 判断表当要清空不
       dialogFormVisible: false,
@@ -154,7 +198,7 @@ export default {
   },
   // 监听器
   watch: {
-    dialogFormVisible (newVal) {
+    dialogFormVisible(newVal) {
       if (newVal === false) {
         // 清空表单
         this.$refs.form.resetFields()
@@ -164,11 +208,11 @@ export default {
     }
   },
   methods: {
-    andleAvatarSuccess (res, file) {
+    andleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
     },
     // 上传前处理
-    beforeAvatarUpload (file) {
+    beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif'
       const isLt2M = file.size / 1024 / 1024 < 2
 
@@ -181,14 +225,14 @@ export default {
       return isJPG && isLt2M
     },
     // 上传成功处理
-    handleAvatarSuccess (res) {
+    handleAvatarSuccess(res) {
       console.log('图片上传信息', res)
       this.imageUrl = this.baseUrl + '/' + res.data.file_path
       this.form.avatar = res.data.file_path
       this.$refs.form.validateField('avatar')
     },
     // 确认验证表单
-    subitClick () {
+    subitClick() {
       this.$refs.form.validate(result => {
         // console.log(result)
         if (result) {
@@ -203,11 +247,11 @@ export default {
       })
     },
     // 刷新图形码
-    changeCodeUrl () {
+    changeCodeUrl() {
       this.codeUrl = process.env.VUE_APP_URL + '/captcha?type=sendsms&t=' + Date.now()
     },
     // 获取验证码
-    getRecode () {
+    getRecode() {
       let _pass = true
       this.$refs.form.validateField(['code', 'phone'], error => {
         if (error !== '') {
@@ -247,11 +291,11 @@ export default {
     text-align: center;
     line-height: 53px;
   }
-  .center{
+  .center {
     text-align: center;
   }
   // 图片上传
-  .avatar-uploader{
+  .avatar-uploader {
     width: 178px;
     margin: 0 auto;
   }
